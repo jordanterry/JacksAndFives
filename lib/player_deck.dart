@@ -9,9 +9,12 @@ class PlayerDeck {
 }
 
 class PlayerDeckWidget extends StatefulWidget {
-  PlayerDeckWidget(this.cards);
+  PlayingCard cardOne;
+  PlayingCard cardTwo;
+  PlayingCard cardThree;
+  PlayingCard cardFour;
 
-  final List<PlayingCard> cards;
+  PlayerDeckWidget(this.cardOne, this.cardTwo, this.cardThree, this.cardFour);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,7 +26,7 @@ class _PlayerDeckState extends State<PlayerDeckWidget> {
   @override
   Widget build(BuildContext context) {
     return StaticPlayerDeckWidget(
-        widget.cards[0], widget.cards[1], widget.cards[2], widget.cards[3]);
+        widget.cardOne, widget.cardTwo, widget.cardThree, widget.cardFour);
   }
 }
 
@@ -54,29 +57,29 @@ class StaticPlayerDeckWidget extends StatelessWidget {
                 top: margin,
                 width: cardWidth,
                 height: cardHeight,
-//                child: NonFlippableFaceUpPlayingCard(_topLeftCard)),
-                child: NonFlippableFaceDownPlayingCard()),
+                child: NonFlippableFaceUpPlayingCard(_topLeftCard)),
+//                child: NonFlippableFaceDownPlayingCard()),
             Positioned(
                 right: margin,
                 top: margin,
                 width: cardWidth,
                 height: cardHeight,
-//                child: NonFlippableFaceUpPlayingCard(_topRightCard)),
-                child: NonFlippableFaceDownPlayingCard()),
+                child: NonFlippableFaceUpPlayingCard(_topRightCard)),
+//                child: NonFlippableFaceDownPlayingCard()),
             Positioned(
                 left: margin,
                 bottom: margin,
                 width: cardWidth,
                 height: cardHeight,
-//                child: NonFlippableFaceUpPlayingCard(_bottomLeftCard)),
-                child: NonFlippableFaceDownPlayingCard()),
+                child: NonFlippableFaceUpPlayingCard(_bottomLeftCard)),
+//                child: NonFlippableFaceDownPlayingCard()),
             Positioned(
                 right: margin,
                 bottom: margin,
                 width: cardWidth,
                 height: cardHeight,
-//                child: NonFlippableFaceUpPlayingCard(_bottomRightCard))
-                child: NonFlippableFaceDownPlayingCard()),
+                child: NonFlippableFaceUpPlayingCard(_bottomRightCard))
+//                child: NonFlippableFaceDownPlayingCard()),
           ],
         ),
         decoration: BoxDecoration(
