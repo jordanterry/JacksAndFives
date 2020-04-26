@@ -21,6 +21,10 @@ class Deck {
     if (amount < _cards.length) return _cards.sublist(0, amount);
     return _cards.sublist(0);
   }
+
+  void addToTop(PlayingCard playingCard) {
+    _cards.insert(0, playingCard);
+  }
 }
 
 class DeckOfCardsFactory {

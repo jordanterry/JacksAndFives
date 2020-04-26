@@ -35,7 +35,7 @@ class DealtDeckOfCards extends StatelessWidget {
               left: 0,
               width: 60,
               height: 75,
-              child: topCard,
+              child: thirdCard,
               //              child: NonFlippableFaceUpPlayingCard(deck.topCard()),
             ),
             Positioned(
@@ -50,7 +50,7 @@ class DealtDeckOfCards extends StatelessWidget {
               left: 16,
               width: 60,
               height: 75,
-              child: thirdCard,
+              child: topCard,
             )
           ],
         ));
