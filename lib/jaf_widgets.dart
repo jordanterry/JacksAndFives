@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kago_game/dealt_deck_dragggable_and_droppable.dart';
 import 'package:kago_game/deck_dealt_widgets.dart';
 import 'package:kago_game/jaf_models.dart';
 import 'package:kago_game/player_deck.dart';
@@ -84,14 +85,14 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
     switch (_jacksAndFives.dealtDeckState) {
       case DealtDeckState.DROPPABLE:
         dealtDeck = DealtDeckDroppable(
-            _jacksAndFives.dealtDeck, _handleDraggedOntoDealtDeck);
+            _jacksAndFives.dealtDeck.getTop(3), _handleDraggedOntoDealtDeck);
         break;
       case DealtDeckState.DROPPABLE_AND_DRAGGABLE:
-        dealtDeck = DealtDeckDroppable(
-            _jacksAndFives.dealtDeck, _handleDraggedOntoDealtDeck);
+        dealtDeck = DealtDeckDraggableAndDroppable(
+            _jacksAndFives.dealtDeck.getTop(3), _handleDraggedOntoDealtDeck);
         break;
       default:
-        dealtDeck = DealtDeckOfCards(_jacksAndFives.dealtDeck);
+        dealtDeck = DealtDeckOfCards(_jacksAndFives.dealtDeck.getTop(3));
     }
 
     return Container(

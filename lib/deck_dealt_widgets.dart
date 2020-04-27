@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:kago_game/deck_models.dart';
 import 'package:kago_game/playing_card_empty.dart';
 import 'package:kago_game/playing_card_model.dart';
 import 'package:kago_game/playing_cards.dart';
 
 class DealtDeckOfCards extends StatelessWidget {
-  final Deck deck;
+  final List<PlayingCard> cards;
 
-  DealtDeckOfCards(this.deck);
+  DealtDeckOfCards(this.cards);
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> childrenCards = [];
-    List<PlayingCard> topOfDeck = deck.getTop(3);
-    if (topOfDeck.length == 0) {
+    if (cards.length == 0) {
       childrenCards.insert(
           0,
           Positioned(
@@ -24,12 +22,9 @@ class DealtDeckOfCards extends StatelessWidget {
             child: PlayingCardEmptyWidget(),
           ));
     } else {
-      if (topOfDeck.length > 0)
-        childrenCards.insert(0, _createCard(topOfDeck[0], 0));
-      if (topOfDeck.length > 1)
-        childrenCards.insert(0, _createCard(topOfDeck[1], 1));
-      if (topOfDeck.length > 2)
-        childrenCards.insert(0, _createCard(topOfDeck[2], 2));
+      if (cards.length > 0) childrenCards.insert(0, _createCard(cards[0], 0));
+      if (cards.length > 1) childrenCards.insert(0, _createCard(cards[1], 1));
+      if (cards.length > 2) childrenCards.insert(0, _createCard(cards[2], 2));
     }
     return Container(
         height: 75,
