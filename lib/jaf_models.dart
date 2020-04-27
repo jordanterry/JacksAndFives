@@ -26,6 +26,7 @@ class JacksAndFives {
 
   void playerReplacesTheirOwnCard(PlayingCard newCard, PlayingCard oldCard) {
     deck.removeFromDeck(newCard);
+    dealtDeck.removeFromDeck(newCard);
     player.replaceCard(newCard, oldCard);
     dealtDeck.addToTop(oldCard);
     playerDeckState = PlayerDeckState.DROPPABLE;
