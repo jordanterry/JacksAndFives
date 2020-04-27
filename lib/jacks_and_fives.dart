@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kago_game/deck_of_cards_dealt.dart';
-import 'package:kago_game/playing_card_empty.dart';
 import 'package:kago_game/player_deck.dart';
 import 'package:kago_game/player_deck_draggable.dart';
 import 'package:kago_game/playing_card_model.dart';
-import 'package:kago_game/playing_cards.dart';
 
 import 'deck_of_cards.dart';
 
@@ -13,7 +11,6 @@ class JacksAndFives {
   Deck deck;
   Deck dealtDeck;
   Player player;
-  PlayingCard userSelectedCard;
   TurnState turnState;
 
   void startGame() {
@@ -21,20 +18,24 @@ class JacksAndFives {
     DeckOfCardsFactory cardsFactory = DeckOfCardsFactory();
     deck = cardsFactory.createDeck();
     dealtDeck = Deck([]);
-    player =
-        Player(deck.takeTop(), deck.takeTop(), deck.takeTop(), deck.takeTop());
+    player = Player(
+        [deck.takeTop(), deck.takeTop(), deck.takeTop(), deck.takeTop()]);
     turnState = TurnState.PLAYER_CAN_SELECT_FROM_DECK;
   }
 
   void userSelectedFromDeck() {
-    userSelectedCard = deck.takeTop();
     turnState = TurnState.PLAYER_CAN_PUT_SELECTED_CARD_ON_DEALT_DECK_OR_SWAP;
   }
 
   void putSelectedCardOntoDealtDeck() {
-    dealtDeck.addToTop(userSelectedCard);
-    userSelectedCard = null;
     turnState = TurnState.PLAYER_CAN_SELECT_FROM_DECK;
+  }
+
+  void replacePlayerCard(PlayingCard newCard, PlayingCard oldCard) {
+    deck.removeFromDeck(newCard);
+    player.replaceCard(newCard, oldCard);
+    dealtDeck.addToTop(oldCard);
+    turnState = TurnState.PLAYER_CAN_SELECT_FROM_BOTH_DECKS;
   }
 }
 
@@ -46,12 +47,14 @@ enum TurnState {
 }
 
 class Player {
-  PlayingCard cardOne;
-  PlayingCard cardTwo;
-  PlayingCard cardThree;
-  PlayingCard cardFour;
+  List<PlayingCard> cards;
 
-  Player(this.cardOne, this.cardTwo, this.cardThree, this.cardFour);
+  Player(this.cards);
+
+  void replaceCard(PlayingCard newCard, PlayingCard oldCard) {
+    int index = cards.indexOf(oldCard);
+    cards[index] = newCard;
+  }
 }
 
 class JackAndFivesScreen extends StatefulWidget {
@@ -69,8 +72,9 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
   }
 
   void _playerPlacesSelectedCardOnDealtDeck() {
-    _jacksAndFives.putSelectedCardOntoDealtDeck();
-    setState(() {});
+    setState(() {
+      _jacksAndFives.putSelectedCardOntoDealtDeck();
+    });
   }
 
   @override
@@ -99,19 +103,28 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
     );
   }
 
+  void _handleCardDragged(PlayingCard playingCard, PlayingCard oldCard) {
+    setState(() {
+      _jacksAndFives.replacePlayerCard(playingCard, oldCard);
+    });
+  }
+
   Widget createPlayerDeckWidget() {
     Widget playerDeck = PlayerDeckWidget(
-        _jacksAndFives.player.cardOne,
-        _jacksAndFives.player.cardTwo,
-        _jacksAndFives.player.cardThree,
-        _jacksAndFives.player.cardFour);
+        _jacksAndFives.player.cards[0],
+        _jacksAndFives.player.cards[1],
+        _jacksAndFives.player.cards[2],
+        _jacksAndFives.player.cards[3]);
 
-    if (_jacksAndFives.turnState == TurnState.PLAYER_CAN_SELECT_FROM_DECK) {
+    if (_jacksAndFives.turnState == TurnState.PLAYER_CAN_SELECT_FROM_DECK ||
+        _jacksAndFives.turnState ==
+            TurnState.PLAYER_CAN_SELECT_FROM_BOTH_DECKS) {
       return DraggablePlayerDeckWidget(
-          _jacksAndFives.player.cardOne,
-          _jacksAndFives.player.cardTwo,
-          _jacksAndFives.player.cardThree,
-          _jacksAndFives.player.cardFour);
+          _jacksAndFives.player.cards[0],
+          _jacksAndFives.player.cards[1],
+          _jacksAndFives.player.cards[2],
+          _jacksAndFives.player.cards[3],
+          _handleCardDragged);
     }
     return playerDeck;
   }
@@ -122,7 +135,9 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
       child: DealtDeckOfCards(_jacksAndFives.dealtDeck),
     );
     if (_jacksAndFives.turnState ==
-        TurnState.PLAYER_CAN_PUT_SELECTED_CARD_ON_DEALT_DECK_OR_SWAP) {
+            TurnState.PLAYER_CAN_PUT_SELECTED_CARD_ON_DEALT_DECK_OR_SWAP ||
+        _jacksAndFives.turnState ==
+            TurnState.PLAYER_CAN_SELECT_FROM_BOTH_DECKS) {
       return GestureDetector(
         onTap: _playerPlacesSelectedCardOnDealtDeck,
         child: dealtDeckContainer,
@@ -133,34 +148,13 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
 
   Widget createDeckWidget() {
     Widget deck = DeckOfCards(_jacksAndFives.deck);
-    if (_jacksAndFives.turnState == TurnState.PLAYER_CAN_SELECT_FROM_DECK) {
+    if (_jacksAndFives.turnState == TurnState.PLAYER_CAN_SELECT_FROM_DECK ||
+        _jacksAndFives.turnState ==
+            TurnState.PLAYER_CAN_SELECT_FROM_BOTH_DECKS) {
       deck = DraggableDeckOfCards(_jacksAndFives.deck);
     }
 
     return Container(
         child: Container(margin: EdgeInsets.only(left: 8), child: deck));
-  }
-
-  Widget createSelectedCardWidget() {
-    if (_jacksAndFives.userSelectedCard == null) {
-      return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              key: Key("selectedCardSlot"),
-              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-              child: PlayingCardEmptyWidget(),
-            )
-          ]);
-    } else {
-      return Row(mainAxisAlignment: MainAxisAlignment.center, children: <
-          Widget>[
-        Container(
-          key: Key("selectedCardSlot"),
-          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-          child: NonFlippableFaceUpPlayingCard(_jacksAndFives.userSelectedCard),
-        )
-      ]);
-    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kago_game/playing_card_empty.dart';
 import 'package:kago_game/playing_card_model.dart';
 import 'package:kago_game/playing_cards.dart';
 
@@ -24,6 +25,10 @@ class Deck {
 
   void addToTop(PlayingCard playingCard) {
     _cards.insert(0, playingCard);
+  }
+
+  void removeFromDeck(PlayingCard playingCard) {
+    _cards.remove(playingCard);
   }
 }
 
@@ -88,38 +93,52 @@ class DraggableDeckOfCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Container(height: 75, width: 76, child: _createDeckChildren());
+  }
+
+  Widget _createDeckChildren() {
+    if (deck._cards.length == 0) return PlayingCardEmptyWidget();
+    Widget topCard = _createDraggableCard();
+    final List<Widget> childrenCards = [
+      Positioned(
+        top: 0,
+        left: 0,
+        width: 60,
         height: 75,
-        width: 76,
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: 0,
-              left: 16,
-              width: 60,
-              height: 75,
-              child: NonFlippableFaceDownPlayingCard(),
-            ),
-            Positioned(
-              top: 0,
-              left: 8,
-              width: 60,
-              height: 75,
-              child: NonFlippableFaceDownPlayingCard(),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              width: 60,
-              height: 75,
-              child: Draggable(
-                child: NonFlippableFaceUpPlayingCard(deck.topCard()),
-                feedback: NonFlippableFaceUpPlayingCard(deck.topCard()),
-                childWhenDragging: Container(),
-                data: deck.topCard(),
-              ),
-            )
-          ],
-        ));
+        child: topCard,
+      )
+    ];
+    if (deck._cards.length > 2) {
+      childrenCards.insert(
+          0,
+          Positioned(
+            top: 0,
+            left: 8,
+            width: 60,
+            height: 75,
+            child: NonFlippableFaceDownPlayingCard(),
+          ));
+    }
+    if (deck._cards.length > 3) {
+      childrenCards.insert(
+          0,
+          Positioned(
+            top: 0,
+            left: 16,
+            width: 60,
+            height: 75,
+            child: NonFlippableFaceDownPlayingCard(),
+          ));
+    }
+    return Stack(children: childrenCards);
+  }
+
+  Widget _createDraggableCard() {
+    return Draggable(
+      child: NonFlippableFaceUpPlayingCard(deck.topCard()),
+      feedback: NonFlippableFaceUpPlayingCard(deck.topCard()),
+      childWhenDragging: Container(),
+      data: deck.topCard(),
+    );
   }
 }

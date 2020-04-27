@@ -3,14 +3,17 @@ import 'package:kago_game/playing_card_empty.dart';
 import 'package:kago_game/playing_card_model.dart';
 import 'package:kago_game/playing_cards.dart';
 
+typedef void CardDraggedCallback(PlayingCard newCard, PlayingCard oldCard);
+
 class DraggablePlayerDeckWidget extends StatefulWidget {
   final PlayingCard cardOne;
   final PlayingCard cardTwo;
   final PlayingCard cardThree;
   final PlayingCard cardFour;
+  final CardDraggedCallback cardDraggedCallback;
 
-  DraggablePlayerDeckWidget(
-      this.cardOne, this.cardTwo, this.cardThree, this.cardFour);
+  DraggablePlayerDeckWidget(this.cardOne, this.cardTwo, this.cardThree,
+      this.cardFour, this.cardDraggedCallback);
 
   @override
   State<StatefulWidget> createState() {
@@ -69,6 +72,7 @@ class _DraggablePlayerDeckWidgetState extends State<DraggablePlayerDeckWidget> {
     }, onWillAccept: (data) {
       return true;
     }, onAccept: (data) {
+      widget.cardDraggedCallback(data, playingCard);
       setState(() {});
     });
   }

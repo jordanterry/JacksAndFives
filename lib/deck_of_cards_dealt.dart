@@ -12,51 +12,58 @@ class DealtDeckOfCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget topCard = _emptyWidget();
-    Widget secondCard = _emptyWidget();
-    Widget thirdCard = _emptyWidget();
+    final List<Widget> childrenCards = [];
     List<PlayingCard> topOfDeck = deck.getTop(3);
-    if (topOfDeck.length >= 1) {
-      topCard = NonFlippableFaceUpPlayingCard(topOfDeck[0]);
-    }
-    if (topOfDeck.length >= 2) {
-      secondCard = NonFlippableFaceUpPlayingCard(topOfDeck[1]);
-    }
-    if (topOfDeck.length >= 3) {
-      thirdCard = NonFlippableFaceUpPlayingCard(topOfDeck[2]);
+    if (topOfDeck.length == 0) {
+      childrenCards.insert(
+          0,
+          Positioned(
+            top: 0,
+            left: 16,
+            width: 60,
+            height: 75,
+            child: PlayingCardEmptyWidget(),
+          ));
+    } else {
+      if (topOfDeck.length > 0) {
+        childrenCards.insert(
+            0,
+            Positioned(
+              top: 0,
+              right: 0,
+              width: 60,
+              height: 75,
+              child: NonFlippableFaceUpPlayingCard(topOfDeck[0]),
+            ));
+      }
+      if (topOfDeck.length > 1) {
+        childrenCards.insert(
+            0,
+            Positioned(
+              top: 0,
+              right: 8,
+              width: 60,
+              height: 75,
+              child: NonFlippableFaceUpPlayingCard(topOfDeck[1]),
+            ));
+      }
+      if (topOfDeck.length > 2) {
+        childrenCards.insert(
+            0,
+            Positioned(
+              top: 0,
+              right: 16,
+              width: 60,
+              height: 75,
+              child: NonFlippableFaceUpPlayingCard(topOfDeck[2]),
+            ));
+      }
     }
     return Container(
         height: 75,
         width: 76,
         child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: 0,
-              left: 0,
-              width: 60,
-              height: 75,
-              child: thirdCard,
-              //              child: NonFlippableFaceUpPlayingCard(deck.topCard()),
-            ),
-            Positioned(
-              top: 0,
-              left: 8,
-              width: 60,
-              height: 75,
-              child: secondCard,
-            ),
-            Positioned(
-              top: 0,
-              left: 16,
-              width: 60,
-              height: 75,
-              child: topCard,
-            )
-          ],
+          children: childrenCards,
         ));
-  }
-
-  Widget _emptyWidget() {
-    return PlayingCardEmptyWidget();
   }
 }
