@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kago_game/empty_card_slot.dart';
+import 'package:kago_game/playing_card_empty.dart';
 import 'package:kago_game/playing_card_model.dart';
 import 'package:kago_game/playing_cards.dart';
 
@@ -57,6 +57,6 @@ class DealtDeckOfCards extends StatelessWidget {
   }
 
   Widget _emptyWidget() {
-    return EmptyCardSlot();
+    return PlayingCardEmptyWidget();
   }
 }

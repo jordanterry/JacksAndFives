@@ -1,7 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/widgets.dart';
 
-class EmptyCardSlot extends StatelessWidget {
+class PlayingCardEmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DottedBorder(

@@ -1,44 +1,24 @@
 import 'package:flutter/widgets.dart';
+import 'package:kago_game/playing_card_empty.dart';
 import 'package:kago_game/playing_card_model.dart';
 import 'package:kago_game/playing_cards.dart';
 
-class PlayerDeck {
-  List<PlayingCard> cards;
-
-  PlayerDeck(this.cards);
-}
-
-class PlayerDeckWidget extends StatefulWidget {
+class DraggablePlayerDeckWidget extends StatefulWidget {
   final PlayingCard cardOne;
   final PlayingCard cardTwo;
   final PlayingCard cardThree;
   final PlayingCard cardFour;
 
-  PlayerDeckWidget(this.cardOne, this.cardTwo, this.cardThree, this.cardFour);
+  DraggablePlayerDeckWidget(
+      this.cardOne, this.cardTwo, this.cardThree, this.cardFour);
 
   @override
   State<StatefulWidget> createState() {
-    return _PlayerDeckState();
+    return _DraggablePlayerDeckWidgetState();
   }
 }
 
-class _PlayerDeckState extends State<PlayerDeckWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return StaticPlayerDeckWidget(
-        widget.cardOne, widget.cardTwo, widget.cardThree, widget.cardFour);
-  }
-}
-
-class StaticPlayerDeckWidget extends StatelessWidget {
-  final PlayingCard _topLeftCard;
-  final PlayingCard _topRightCard;
-  final PlayingCard _bottomLeftCard;
-  final PlayingCard _bottomRightCard;
-
-  StaticPlayerDeckWidget(this._topLeftCard, this._topRightCard,
-      this._bottomLeftCard, this._bottomRightCard);
-
+class _DraggablePlayerDeckWidgetState extends State<DraggablePlayerDeckWidget> {
   @override
   Widget build(BuildContext context) {
     double cardHeight = 75;
@@ -56,31 +36,40 @@ class StaticPlayerDeckWidget extends StatelessWidget {
               top: margin,
               width: cardWidth,
               height: cardHeight,
-              child: _createCard(_topLeftCard)),
+              child: _createCard(widget.cardOne)),
           Positioned(
               right: margin,
               top: margin,
               width: cardWidth,
               height: cardHeight,
-              child: _createCard(_topRightCard)),
+              child: _createCard(widget.cardTwo)),
           Positioned(
               left: margin,
               bottom: margin,
               width: cardWidth,
               height: cardHeight,
-              child: _createCard(_bottomLeftCard)),
+              child: _createCard(widget.cardThree)),
           Positioned(
               right: margin,
               bottom: margin,
               width: cardWidth,
               height: cardHeight,
-              child: _createCard(_bottomRightCard))
+              child: _createCard(widget.cardFour))
         ],
       ),
     );
   }
 
   Widget _createCard(PlayingCard playingCard) {
-    return NonFlippableFaceUpPlayingCard(playingCard);
+    return DragTarget<PlayingCard>(
+        builder: (context, candidates, rejectedData) {
+      return candidates.length > 0
+          ? PlayingCardEmptyWidget() //NonFlippableFaceUpPlayingCard(candidates[0])
+          : NonFlippableFaceDownPlayingCard();
+    }, onWillAccept: (data) {
+      return true;
+    }, onAccept: (data) {
+      setState(() {});
+    });
   }
 }

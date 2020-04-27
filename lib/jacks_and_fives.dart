@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kago_game/dealt_deck_of_cards.dart';
-import 'package:kago_game/empty_card_slot.dart';
+import 'package:kago_game/deck_of_cards_dealt.dart';
+import 'package:kago_game/playing_card_empty.dart';
 import 'package:kago_game/player_deck.dart';
+import 'package:kago_game/player_deck_draggable.dart';
 import 'package:kago_game/playing_card_model.dart';
 import 'package:kago_game/playing_cards.dart';
 
@@ -67,11 +68,6 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
     _jacksAndFives = JacksAndFives()..startGame();
   }
 
-  void _playerSelectsFromDeck() {
-    _jacksAndFives.userSelectedFromDeck();
-    setState(() {});
-  }
-
   void _playerPlacesSelectedCardOnDealtDeck() {
     _jacksAndFives.putSelectedCardOntoDealtDeck();
     setState(() {});
@@ -89,25 +85,35 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
                   width: 300,
                   height: 180,
                   alignment: FractionalOffset.center,
-                  child: Column(children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          createDealtDeckWidget(),
-                          createDeckWidget()
-                        ]),
-                    createSelectedCardWidget(),
-                  ]),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        createDealtDeckWidget(),
+                        createDeckWidget(),
+                      ]),
                 )),
             Align(
                 alignment: FractionalOffset.bottomCenter,
-                child: PlayerDeckWidget(
-                    _jacksAndFives.player.cardOne,
-                    _jacksAndFives.player.cardTwo,
-                    _jacksAndFives.player.cardThree,
-                    _jacksAndFives.player.cardFour)),
+                child: createPlayerDeckWidget()),
           ])), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Widget createPlayerDeckWidget() {
+    Widget playerDeck = PlayerDeckWidget(
+        _jacksAndFives.player.cardOne,
+        _jacksAndFives.player.cardTwo,
+        _jacksAndFives.player.cardThree,
+        _jacksAndFives.player.cardFour);
+
+    if (_jacksAndFives.turnState == TurnState.PLAYER_CAN_SELECT_FROM_DECK) {
+      return DraggablePlayerDeckWidget(
+          _jacksAndFives.player.cardOne,
+          _jacksAndFives.player.cardTwo,
+          _jacksAndFives.player.cardThree,
+          _jacksAndFives.player.cardFour);
+    }
+    return playerDeck;
   }
 
   Widget createDealtDeckWidget() {
@@ -126,18 +132,13 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
   }
 
   Widget createDeckWidget() {
-    Widget deckContainer = Container(
-        child: Container(
-            margin: EdgeInsets.only(left: 8),
-            child: DeckOfCards(_jacksAndFives.deck)));
+    Widget deck = DeckOfCards(_jacksAndFives.deck);
     if (_jacksAndFives.turnState == TurnState.PLAYER_CAN_SELECT_FROM_DECK) {
-      return GestureDetector(
-        onTap: _playerSelectsFromDeck,
-        child: deckContainer,
-      );
-    } else {
-      return deckContainer;
+      deck = DraggableDeckOfCards(_jacksAndFives.deck);
     }
+
+    return Container(
+        child: Container(margin: EdgeInsets.only(left: 8), child: deck));
   }
 
   Widget createSelectedCardWidget() {
@@ -148,7 +149,7 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
             Container(
               key: Key("selectedCardSlot"),
               margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-              child: EmptyCardSlot(),
+              child: PlayingCardEmptyWidget(),
             )
           ]);
     } else {
