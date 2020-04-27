@@ -1,52 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kago_game/deck_models.dart';
 import 'package:kago_game/playing_card_empty.dart';
-import 'package:kago_game/playing_card_model.dart';
 import 'package:kago_game/playing_cards.dart';
-
-class Deck {
-  List<PlayingCard> _cards;
-
-  Deck(this._cards);
-
-  PlayingCard topCard() {
-    return _cards[0];
-  }
-
-  PlayingCard takeTop() {
-    PlayingCard top = topCard();
-    _cards.remove(top);
-    return top;
-  }
-
-  List<PlayingCard> getTop(int amount) {
-    if (amount < _cards.length) return _cards.sublist(0, amount);
-    return _cards.sublist(0);
-  }
-
-  void addToTop(PlayingCard playingCard) {
-    _cards.insert(0, playingCard);
-  }
-
-  void removeFromDeck(PlayingCard playingCard) {
-    _cards.remove(playingCard);
-  }
-}
-
-class DeckOfCardsFactory {
-  Deck createDeck() {
-    return Deck(_createCards());
-  }
-
-  List<PlayingCard> _createCards() {
-    List<PlayingCard> cards = [];
-    for (var suit in CardSuit.values) {
-      for (var face in CardType.values) {
-        cards.add(PlayingCard(suit, face));
-      }
-    }
-    return cards..shuffle();
-  }
-}
 
 class DeckOfCards extends StatelessWidget {
   final Deck deck;
@@ -97,7 +52,7 @@ class DraggableDeckOfCards extends StatelessWidget {
   }
 
   Widget _createDeckChildren() {
-    if (deck._cards.length == 0) return PlayingCardEmptyWidget();
+    if (deck.size() == 0) return PlayingCardEmptyWidget();
     Widget topCard = _createDraggableCard();
     final List<Widget> childrenCards = [
       Positioned(
@@ -108,7 +63,7 @@ class DraggableDeckOfCards extends StatelessWidget {
         child: topCard,
       )
     ];
-    if (deck._cards.length > 2) {
+    if (deck.size() > 2) {
       childrenCards.insert(
           0,
           Positioned(
@@ -119,7 +74,7 @@ class DraggableDeckOfCards extends StatelessWidget {
             child: NonFlippableFaceDownPlayingCard(),
           ));
     }
-    if (deck._cards.length > 3) {
+    if (deck.size() > 3) {
       childrenCards.insert(
           0,
           Positioned(

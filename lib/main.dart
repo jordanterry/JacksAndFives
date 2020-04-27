@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
-import 'jacks_and_fives.dart';
+import 'package:kago_game/jaf_widgets.dart';
 
 void main() {
   runApp(MyApp());
