@@ -15,9 +15,7 @@ class DealtDeckDroppable extends StatelessWidget {
   Widget build(BuildContext context) {
     return DragTarget<PlayingCard>(
         builder: (context, candidates, rejectedData) {
-      return candidates.length > 0
-          ? DealtDeckOfCards(this.cards)
-          : DealtDeckOfCards(this.cards);
+      return DealtDeckOfCards(cards);
     }, onWillAccept: (data) {
       return true;
     }, onAccept: (data) {

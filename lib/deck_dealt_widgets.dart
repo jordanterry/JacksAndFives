@@ -13,22 +13,18 @@ class DealtDeckOfCards extends StatelessWidget {
     final List<Widget> childrenCards = [];
     if (cards.length == 0) {
       childrenCards.insert(
-          0,
-          Positioned(
-            top: 0,
-            left: 16,
-            width: 60,
-            height: 75,
-            child: PlayingCardEmptyWidget(),
-          ));
+        0,
+        PlayingCardEmptyWidget(),
+      );
     } else {
       if (cards.length > 0) childrenCards.insert(0, _createCard(cards[0], 0));
       if (cards.length > 1) childrenCards.insert(0, _createCard(cards[1], 1));
       if (cards.length > 2) childrenCards.insert(0, _createCard(cards[2], 2));
     }
     return Container(
-        height: 75,
-        width: 76,
+        width: 100,
+        height: 100,
+        margin: EdgeInsets.only(right: 8),
         child: Stack(
           children: childrenCards,
         ));
@@ -38,8 +34,6 @@ class DealtDeckOfCards extends StatelessWidget {
     return Positioned(
       top: 0,
       right: 8.0 * position,
-      width: 60,
-      height: 75,
       child: NonFlippableFaceUpPlayingCard(playingCard),
     );
   }

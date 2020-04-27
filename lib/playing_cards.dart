@@ -27,10 +27,12 @@ class PlayingCardFront extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var suit = getSuit(context);
+    var textValue = playingCardToFaceValue(card);
     return Container(
-      height: 75,
-      width: 60,
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      height: 100,
+      width: 80,
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
       decoration: BoxDecoration(
           color: Color.fromARGB(255, 255, 255, 255),
           borderRadius: const BorderRadius.all(Radius.circular(5.0)),
@@ -40,7 +42,24 @@ class PlayingCardFront extends StatelessWidget {
               right: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
               bottom: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)))),
       foregroundDecoration: BoxDecoration(),
-      child: Center(child: Text(playingCardToFaceValue(card))),
+      child: Stack(children: [
+        Align(
+          alignment: FractionalOffset.topRight,
+          child: Column(children: <Widget>[
+            Text(textValue,
+                style: TextStyle(
+                    fontSize: 11, color: Color.fromARGB(255, 0, 0, 0))),
+            suit
+          ]),
+        ),
+        Align(
+            alignment: FractionalOffset.center,
+            child: Text(
+              textValue,
+              style:
+                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
+            )),
+      ]),
     );
   }
 
@@ -76,6 +95,57 @@ class PlayingCardFront extends StatelessWidget {
         return "";
     }
   }
+
+  Widget getSuit(BuildContext context) {
+    Image image;
+    switch (card.cardSuit) {
+      case CardSuit.CLUBS:
+        image = getClub(context);
+        break;
+      case CardSuit.HEARTS:
+        image = getHeart(context);
+        break;
+      case CardSuit.DIAMONDS:
+        image = getDiamond(context);
+        break;
+      default: // Represents spades, should only be spades. Don't know dart well enough to make this explicit.
+        image = getSpade(context);
+        break;
+    }
+    return image;
+  }
+
+  Image getHeart(BuildContext context) {
+    return Image.asset(
+      'assets/cards_heart.png',
+      width: 24,
+      height: 24,
+    );
+  }
+
+  Image getDiamond(BuildContext context) {
+    return Image.asset(
+      'assets/cards_diamond.png',
+      width: 24,
+      height: 24,
+    );
+  }
+
+  Image getClub(BuildContext context) {
+    return Image.asset(
+      'assets/cards_club.png',
+      width: 24,
+      height: 24,
+    );
+  }
+
+  Image getSpade(BuildContext context) {
+    return Image.asset(
+      'assets/cards_spade.png',
+      width: 16,
+      height: 16,
+    );
+  }
 }
 
 class PlayingCardBack extends StatelessWidget {
@@ -84,8 +154,8 @@ class PlayingCardBack extends StatelessWidget {
     BorderSide cardBorder =
         BorderSide(width: 5, color: const Color.fromARGB(255, 0, 0, 0));
     return Container(
-      height: 75,
-      width: 60,
+      height: 100,
+      width: 80,
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       decoration: BoxDecoration(
           color: Color.fromARGB(255, 255, 0, 0),

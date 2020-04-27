@@ -11,33 +11,25 @@ class DeckOfCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 75,
-        width: 76,
         child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: 0,
-              left: 16,
-              width: 60,
-              height: 75,
-              child: NonFlippableFaceDownPlayingCard(),
-            ),
-            Positioned(
-              top: 0,
-              left: 8,
-              width: 60,
-              height: 75,
-              child: NonFlippableFaceDownPlayingCard(),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              width: 60,
-              height: 75,
-              child: NonFlippableFaceUpPlayingCard(deck.topCard()),
-            )
-          ],
-        ));
+      children: <Widget>[
+        Positioned(
+          top: 0,
+          left: 16,
+          child: NonFlippableFaceDownPlayingCard(),
+        ),
+        Positioned(
+          top: 0,
+          left: 8,
+          child: NonFlippableFaceDownPlayingCard(),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          child: NonFlippableFaceUpPlayingCard(deck.topCard()),
+        )
+      ],
+    ));
   }
 }
 
@@ -58,8 +50,6 @@ class DraggableDeckOfCards extends StatelessWidget {
       Positioned(
         top: 0,
         left: 0,
-        width: 60,
-        height: 75,
         child: topCard,
       )
     ];
@@ -69,8 +59,6 @@ class DraggableDeckOfCards extends StatelessWidget {
           Positioned(
             top: 0,
             left: 8,
-            width: 60,
-            height: 75,
             child: NonFlippableFaceDownPlayingCard(),
           ));
     }
@@ -80,8 +68,6 @@ class DraggableDeckOfCards extends StatelessWidget {
           Positioned(
             top: 0,
             left: 16,
-            width: 60,
-            height: 75,
             child: NonFlippableFaceDownPlayingCard(),
           ));
     }
@@ -91,7 +77,7 @@ class DraggableDeckOfCards extends StatelessWidget {
   Widget _createDraggableCard() {
     return Draggable(
       child: NonFlippableFaceUpPlayingCard(deck.topCard()),
-      feedback: NonFlippableFaceUpPlayingCard(deck.topCard()),
+      feedback: PlayingCardFront(deck.topCard()),
       childWhenDragging: Container(),
       data: deck.topCard(),
     );

@@ -7,8 +7,8 @@ class PlayingCardEmptyWidget extends StatelessWidget {
     return DottedBorder(
         child: Container(
       decoration: BoxDecoration(color: Color.fromARGB(255, 255, 255, 255)),
-      height: 75,
-      width: 60,
+      height: 100,
+      width: 80,
     ));
   }
 }

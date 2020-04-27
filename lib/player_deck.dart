@@ -41,46 +41,20 @@ class StaticPlayerDeckWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double cardHeight = 75;
-    double cardWidth = 60;
-    double margin = 4;
-    double playerDeckWidth = (cardWidth * 2) + margin * 4;
-    double playerDeckHeight = (cardHeight * 2) + margin * 4;
-    return Container(
-      width: playerDeckWidth,
-      height: playerDeckHeight,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-              left: margin,
-              top: margin,
-              width: cardWidth,
-              height: cardHeight,
-              child: _createCard(_topLeftCard)),
-          Positioned(
-              right: margin,
-              top: margin,
-              width: cardWidth,
-              height: cardHeight,
-              child: _createCard(_topRightCard)),
-          Positioned(
-              left: margin,
-              bottom: margin,
-              width: cardWidth,
-              height: cardHeight,
-              child: _createCard(_bottomLeftCard)),
-          Positioned(
-              right: margin,
-              bottom: margin,
-              width: cardWidth,
-              height: cardHeight,
-              child: _createCard(_bottomRightCard))
-        ],
-      ),
-    );
+    return Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+        _createCard(_topLeftCard),
+        _createCard(_bottomLeftCard),
+      ]),
+      Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [_createCard(_topRightCard), _createCard(_bottomRightCard)])
+    ]);
   }
 
   Widget _createCard(PlayingCard playingCard) {
-    return NonFlippableFaceUpPlayingCard(playingCard);
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        child: NonFlippableFaceUpPlayingCard(playingCard));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:kago_game/dealt_deck_dragggable_and_droppable.dart';
 import 'package:kago_game/deck_dealt_widgets.dart';
 import 'package:kago_game/jaf_models.dart';
@@ -33,16 +34,24 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
             Align(
                 alignment: FractionalOffset.center,
                 child: Container(
-                  width: 300,
-                  height: 180,
-                  alignment: FractionalOffset.center,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _createDealtDeckWidget(),
-                        _createDeckWidget(),
-                      ]),
-                )),
+                    child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _createDealtDeckWidget(),
+                        ]),
+                    Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _createDeckWidget(),
+                        ]),
+                  ],
+                ))),
             Align(
                 alignment: FractionalOffset.bottomCenter,
                 child: createPlayerDeckWidget()),
@@ -95,10 +104,7 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
         dealtDeck = DealtDeckOfCards(_jacksAndFives.dealtDeck.getTop(3));
     }
 
-    return Container(
-      margin: EdgeInsets.only(right: 8),
-      child: dealtDeck,
-    );
+    return dealtDeck;
   }
 
   Widget _createDeckWidget() {
@@ -111,6 +117,6 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
         deck = DeckOfCards(_jacksAndFives.deck);
     }
     return Container(
-        child: Container(margin: EdgeInsets.only(left: 8), child: deck));
+        width: 100, height: 100, margin: EdgeInsets.only(left: 8), child: deck);
   }
 }
