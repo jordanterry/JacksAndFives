@@ -16,12 +16,12 @@ class DeckOfCards extends StatelessWidget {
         Positioned(
           top: 0,
           left: 16,
-          child: NonFlippableFaceDownPlayingCard(),
+          child: NonFlippableFaceDownPlayingCard(key: GlobalKey()),
         ),
         Positioned(
           top: 0,
           left: 8,
-          child: NonFlippableFaceDownPlayingCard(),
+          child: NonFlippableFaceDownPlayingCard(key: GlobalKey()),
         ),
         Positioned(
           top: 0,
@@ -44,7 +44,7 @@ class DraggableDeckOfCards extends StatelessWidget {
   }
 
   Widget _createDeckChildren() {
-    if (deck.size() == 0) return PlayingCardEmptyWidget();
+    if (deck.size() == 0) return PlayingCardEmptyWidget(key: GlobalKey());
     Widget topCard = _createDraggableCard();
     final List<Widget> childrenCards = [
       Positioned(
@@ -59,7 +59,7 @@ class DraggableDeckOfCards extends StatelessWidget {
           Positioned(
             top: 0,
             left: 8,
-            child: NonFlippableFaceDownPlayingCard(),
+            child: NonFlippableFaceDownPlayingCard(key: GlobalKey()),
           ));
     }
     if (deck.size() > 3) {
@@ -68,7 +68,7 @@ class DraggableDeckOfCards extends StatelessWidget {
           Positioned(
             top: 0,
             left: 16,
-            child: NonFlippableFaceDownPlayingCard(),
+            child: NonFlippableFaceDownPlayingCard(key: GlobalKey()),
           ));
     }
     return Stack(children: childrenCards);

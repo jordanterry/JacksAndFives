@@ -8,14 +8,15 @@ typedef void CardDroppedCallback(PlayingCard newCard);
 class DealtDeckDroppable extends StatelessWidget {
   final List<PlayingCard> cards;
   final CardDroppedCallback cardDraggedCallback;
+  final Key topDealtKey;
 
-  DealtDeckDroppable(this.cards, this.cardDraggedCallback);
+  DealtDeckDroppable(this.topDealtKey, this.cards, this.cardDraggedCallback);
 
   @override
   Widget build(BuildContext context) {
     return DragTarget<PlayingCard>(
         builder: (context, candidates, rejectedData) {
-      return DealtDeckOfCards(cards);
+      return DealtDeckOfCards(topDealtKey, cards);
     }, onWillAccept: (data) {
       return true;
     }, onAccept: (data) {

@@ -7,6 +7,7 @@ import 'package:kago_game/jaf_models.dart';
 import 'package:kago_game/player_deck.dart';
 import 'package:kago_game/player_deck_draggable.dart';
 import 'package:kago_game/playing_card_model.dart';
+import 'package:kago_game/playing_cards_animating.dart';
 
 import 'deck_dealt_droppable.dart';
 import 'deck_widgets.dart';
@@ -21,47 +22,65 @@ class JackAndFivesScreen extends StatefulWidget {
 class _JackAndFivesState extends State<JackAndFivesScreen> {
   JacksAndFives _jacksAndFives;
 
+  Widget animatingCard = Container();
+
+  GlobalKey dealtDeckKey = GlobalKey(debugLabel: "topOfDealtDeck");
+
   _JackAndFivesState() {
     _jacksAndFives = JacksAndFives()..startGame();
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> stackChildren = [];
+    stackChildren.add(Align(
+        alignment: FractionalOffset.center,
+        child: Container(
+            child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _createDealtDeckWidget(),
+                ]),
+            Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _createDeckWidget(),
+                ]),
+          ],
+        ))));
+    stackChildren.add(Align(
+        alignment: FractionalOffset.bottomCenter,
+        child: createPlayerDeckWidget()));
+    stackChildren.add(animatingCard);
+
     return Scaffold(
       body: Container(
           margin: MediaQuery.of(context).padding,
-          child: Stack(children: [
-            Align(
-                alignment: FractionalOffset.center,
-                child: Container(
-                    child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _createDealtDeckWidget(),
-                        ]),
-                    Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _createDeckWidget(),
-                        ]),
-                  ],
-                ))),
-            Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: createPlayerDeckWidget()),
-          ])), // This trailing comma makes auto-formatting nicer for build methods.
+          child: Stack(
+              children:
+                  stackChildren)), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  void _handleCardDragged(PlayingCard playingCard, PlayingCard oldCard) {
+  void _handleCardDragged(
+      PlayingCard playingCard, PlayingCard oldCard, Rect position) {
     setState(() {
+      Rect dealtDeck = dealtDeckKey.globalPaintBounds;
+      animatingCard = PlayingCardAnimating(playingCard, position.top,
+          position.left, dealtDeck.top, dealtDeck.left, _onAnimatedCardEnd);
       _jacksAndFives.playerReplacesTheirOwnCard(playingCard, oldCard);
+    });
+  }
+
+  void _onAnimatedCardEnd() {
+    setState(() {
+      animatingCard = Container();
     });
   }
 
@@ -93,15 +112,16 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
     Widget dealtDeck;
     switch (_jacksAndFives.dealtDeckState) {
       case DealtDeckState.DROPPABLE:
-        dealtDeck = DealtDeckDroppable(
+        dealtDeck = DealtDeckDroppable(dealtDeckKey,
             _jacksAndFives.dealtDeck.getTop(3), _handleDraggedOntoDealtDeck);
         break;
       case DealtDeckState.DROPPABLE_AND_DRAGGABLE:
-        dealtDeck = DealtDeckDraggableAndDroppable(
+        dealtDeck = DealtDeckDraggableAndDroppable(dealtDeckKey,
             _jacksAndFives.dealtDeck.getTop(3), _handleDraggedOntoDealtDeck);
         break;
       default:
-        dealtDeck = DealtDeckOfCards(_jacksAndFives.dealtDeck.getTop(3));
+        dealtDeck =
+            DealtDeckOfCards(dealtDeckKey, _jacksAndFives.dealtDeck.getTop(3));
     }
 
     return dealtDeck;

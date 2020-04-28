@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kago_game/playing_card_model.dart';
 
 class NonFlippableFaceDownPlayingCard extends StatelessWidget {
+  NonFlippableFaceDownPlayingCard({key: Key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return PlayingCardBack();
@@ -156,7 +158,6 @@ class PlayingCardBack extends StatelessWidget {
     return Container(
       height: 100,
       width: 80,
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       decoration: BoxDecoration(
           color: Color.fromARGB(255, 255, 0, 0),
           borderRadius: const BorderRadius.all(Radius.circular(5.0)),

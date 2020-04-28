@@ -9,8 +9,10 @@ typedef void CardDraggedCallback(PlayingCard newCard);
 class DealtDeckDraggableAndDroppable extends StatelessWidget {
   final List<PlayingCard> cards;
   final CardDraggedCallback cardDraggedCallback;
+  final Key topDealtKey;
 
-  DealtDeckDraggableAndDroppable(this.cards, this.cardDraggedCallback);
+  DealtDeckDraggableAndDroppable(
+      this.topDealtKey, this.cards, this.cardDraggedCallback);
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +23,9 @@ class DealtDeckDraggableAndDroppable extends StatelessWidget {
       draggingCards = [cards[1], cards[2]];
     }
     return Draggable(
-      child: DealtDeckDroppable(cards, cardDraggedCallback),
+      child: DealtDeckDroppable(topDealtKey, cards, cardDraggedCallback),
       feedback: NonFlippableFaceUpPlayingCard(cards[0]),
-      childWhenDragging: DealtDeckOfCards(draggingCards),
+      childWhenDragging: DealtDeckOfCards(topDealtKey, draggingCards),
       data: cards[0],
     );
   }
