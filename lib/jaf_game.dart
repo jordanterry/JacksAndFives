@@ -1,5 +1,5 @@
-import 'package:kago_game/deck_glue.dart';
-import 'package:kago_game/deck_models.dart';
+import 'package:kago_game/deck/deck_glue.dart';
+import 'package:kago_game/deck/deck_models.dart';
 import 'package:kago_game/jaf_models.dart';
 import 'package:kago_game/playing_card_model.dart';
 

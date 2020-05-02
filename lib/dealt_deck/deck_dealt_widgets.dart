@@ -17,8 +17,12 @@ class DealtDeckOfCards extends StatelessWidget {
     if (cards.length == 0) {
       childrenCards.insert(
         0,
-        Container(
-            key: topDealtKey, child: PlayingCardEmptyWidget(key: GlobalKey())),
+        Positioned(
+            top: 0,
+            right: 0.0,
+            child: Container(
+                key: topDealtKey,
+                child: PlayingCardEmptyWidget(key: GlobalKey()))),
       );
     } else {
       if (cards.length > 0) childrenCards.insert(0, _createCard(cards[0], 0));

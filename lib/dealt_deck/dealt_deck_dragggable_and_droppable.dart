@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kago_game/deck_dealt_droppable.dart';
-import 'package:kago_game/deck_dealt_widgets.dart';
+import 'package:kago_game/dealt_deck/deck_dealt_droppable.dart';
+import 'package:kago_game/dealt_deck/deck_dealt_widgets.dart';
 import 'package:kago_game/playing_card_model.dart';
 import 'package:kago_game/playing_cards.dart';
 
@@ -42,7 +42,6 @@ class DealtDeckDraggableAndDroppable extends StatelessWidget {
       },
       onDragCompleted: () {},
       onDraggableCanceled: (velocity, offset) {
-        print("Dealt Deck onDraggableCanceled");
         cardDraggedBackToDeck();
       },
     );

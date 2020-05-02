@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:kago_game/dealt_deck_dragggable_and_droppable.dart';
-import 'package:kago_game/deck_dealt_widgets.dart';
+import 'package:kago_game/dealt_deck/dealt_deck_dragggable_and_droppable.dart';
+import 'package:kago_game/dealt_deck/deck_dealt_widgets.dart';
 import 'package:kago_game/jaf_models.dart';
-import 'package:kago_game/player_deck.dart';
-import 'package:kago_game/player_deck_draggable.dart';
+import 'package:kago_game/player_deck/player_deck.dart';
+import 'package:kago_game/player_deck/player_deck_draggable.dart';
 import 'package:kago_game/playing_card_model.dart';
 
-import 'deck_dealt_droppable.dart';
-import 'deck_widgets.dart';
+import 'dealt_deck/deck_dealt_droppable.dart';
+import 'deck/deck_widgets.dart';
 
 class JackAndFivesScreen extends StatefulWidget {
   @override
@@ -115,11 +115,15 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
             _jacksAndFives.jafGame.dealtDeck.getTop(3),
             _handleDraggedOntoDealtDeck, () {
           setState(() {
-            _jacksAndFives.playerTakesCardFromDealtDeck();
+            setState(() {
+              _jacksAndFives.playerTakesCardFromDealtDeck();
+            });
           });
         }, () {
           setState(() {
-            _jacksAndFives.playerReturnsTakenCardToDeckTakenFrom();
+            setState(() {
+              _jacksAndFives.playerReturnsTakenCardToDeckTakenFrom();
+            });
           });
         });
         break;

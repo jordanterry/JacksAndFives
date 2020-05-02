@@ -1,4 +1,4 @@
-import 'playing_card_model.dart';
+import '../playing_card_model.dart';
 
 class Deck {
   List<PlayingCard> _cards;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kago_game/deck_models.dart';
+import 'package:kago_game/deck/deck_models.dart';
 import 'package:kago_game/playing_card_empty.dart';
 import 'package:kago_game/playing_cards.dart';
 

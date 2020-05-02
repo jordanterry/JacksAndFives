@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kago_game/deck_dealt_widgets.dart';
+import 'package:kago_game/dealt_deck/deck_dealt_widgets.dart';
 import 'package:kago_game/playing_card_model.dart';
 
 typedef void CardDroppedCallback(PlayingCard newCard);
