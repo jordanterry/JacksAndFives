@@ -6,13 +6,23 @@ import 'package:kago_game/playing_cards.dart';
 
 typedef void CardDraggedCallback(PlayingCard newCard);
 
+typedef void CardDraggedFromDeck();
+
+typedef void CardDraggedBackToDeck();
+
 class DealtDeckDraggableAndDroppable extends StatelessWidget {
   final List<PlayingCard> cards;
   final CardDraggedCallback cardDraggedCallback;
   final Key topDealtKey;
+  final CardDraggedFromDeck cardDraggedFromDeck;
+  final CardDraggedBackToDeck cardDraggedBackToDeck;
 
   DealtDeckDraggableAndDroppable(
-      this.topDealtKey, this.cards, this.cardDraggedCallback);
+      this.topDealtKey,
+      this.cards,
+      this.cardDraggedCallback,
+      this.cardDraggedFromDeck,
+      this.cardDraggedBackToDeck);
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +37,14 @@ class DealtDeckDraggableAndDroppable extends StatelessWidget {
       feedback: NonFlippableFaceUpPlayingCard(cards[0]),
       childWhenDragging: DealtDeckOfCards(topDealtKey, draggingCards),
       data: cards[0],
+      onDragStarted: () {
+        cardDraggedFromDeck();
+      },
+      onDragCompleted: () {},
+      onDraggableCanceled: (velocity, offset) {
+        print("Dealt Deck onDraggableCanceled");
+        cardDraggedBackToDeck();
+      },
     );
   }
 }

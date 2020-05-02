@@ -7,7 +7,6 @@ import 'package:kago_game/jaf_models.dart';
 import 'package:kago_game/player_deck.dart';
 import 'package:kago_game/player_deck_draggable.dart';
 import 'package:kago_game/playing_card_model.dart';
-import 'package:kago_game/playing_cards_animating.dart';
 
 import 'deck_dealt_droppable.dart';
 import 'deck_widgets.dart';
@@ -68,43 +67,36 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
     );
   }
 
-  void _handleCardDragged(
-      PlayingCard playingCard, PlayingCard oldCard, Rect position) {
-    setState(() {
-      Rect dealtDeck = dealtDeckKey.globalPaintBounds;
-      animatingCard = PlayingCardAnimating(playingCard, position.top,
-          position.left, dealtDeck.top, dealtDeck.left, _onAnimatedCardEnd);
-      _jacksAndFives.playerReplacesTheirOwnCard(playingCard, oldCard);
-    });
+  void _handleCardTakenFromDealtDeck() {
+    _jacksAndFives.playerTakesCardFromDealtDeck();
   }
 
-  void _onAnimatedCardEnd() {
+  void _handleCardPlacedOnPlayer(int position, Rect animateFrom) {
     setState(() {
-      animatingCard = Container();
+      _jacksAndFives.playerPutsCardOnCardInDeck(position);
+
+//      Rect dealtDeck = dealtDeckKey.globalPaintBounds;
+//      animatingCard = PlayingCardAnimating(animateTo.top - 8,
+//          animateTo.left - 8, dealtDeck.top - 8, dealtDeck.left - 8, () {
+//        setState(() {
+//          animatingCard = Container();
+//        });
+//      });
     });
   }
 
   void _handleDraggedOntoDealtDeck(PlayingCard playingCard) {
     setState(() {
-      _jacksAndFives.playerMovesCardToDealtDeck(playingCard);
+      _jacksAndFives.playerPutsCardOnDealtDeck();
     });
   }
 
   Widget createPlayerDeckWidget() {
     switch (_jacksAndFives.playerDeckState) {
       case PlayerDeckState.DROPPABLE:
-        return DraggablePlayerDeckWidget(
-            _jacksAndFives.player.cards[0],
-            _jacksAndFives.player.cards[1],
-            _jacksAndFives.player.cards[2],
-            _jacksAndFives.player.cards[3],
-            _handleCardDragged);
+        return DraggablePlayerDeckWidget(_handleCardPlacedOnPlayer);
       default: // Nothing
-        return PlayerDeckWidget(
-            _jacksAndFives.player.cards[0],
-            _jacksAndFives.player.cards[1],
-            _jacksAndFives.player.cards[2],
-            _jacksAndFives.player.cards[3]);
+        return PlayerDeckWidget();
     }
   }
 
@@ -112,16 +104,28 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
     Widget dealtDeck;
     switch (_jacksAndFives.dealtDeckState) {
       case DealtDeckState.DROPPABLE:
-        dealtDeck = DealtDeckDroppable(dealtDeckKey,
-            _jacksAndFives.dealtDeck.getTop(3), _handleDraggedOntoDealtDeck);
+        dealtDeck = DealtDeckDroppable(
+            dealtDeckKey,
+            _jacksAndFives.jafGame.dealtDeck.getTop(3),
+            _handleDraggedOntoDealtDeck);
         break;
       case DealtDeckState.DROPPABLE_AND_DRAGGABLE:
-        dealtDeck = DealtDeckDraggableAndDroppable(dealtDeckKey,
-            _jacksAndFives.dealtDeck.getTop(3), _handleDraggedOntoDealtDeck);
+        dealtDeck = DealtDeckDraggableAndDroppable(
+            dealtDeckKey,
+            _jacksAndFives.jafGame.dealtDeck.getTop(3),
+            _handleDraggedOntoDealtDeck, () {
+          setState(() {
+            _jacksAndFives.playerTakesCardFromDealtDeck();
+          });
+        }, () {
+          setState(() {
+            _jacksAndFives.playerReturnsTakenCardToDeckTakenFrom();
+          });
+        });
         break;
       default:
-        dealtDeck =
-            DealtDeckOfCards(dealtDeckKey, _jacksAndFives.dealtDeck.getTop(3));
+        dealtDeck = DealtDeckOfCards(
+            dealtDeckKey, _jacksAndFives.jafGame.dealtDeck.getTop(3));
     }
 
     return dealtDeck;
@@ -131,10 +135,18 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
     Widget deck;
     switch (_jacksAndFives.deckState) {
       case DeckState.DRAGGABLE:
-        deck = DraggableDeckOfCards(_jacksAndFives.deck);
+        deck = DraggableDeckOfCards(_jacksAndFives.jafGame.deck, () {
+          setState(() {
+            _jacksAndFives.playerTakesCardFromDeck();
+          });
+        }, () {
+          setState(() {
+            _jacksAndFives.playerReturnsTakenCardToDeckTakenFrom();
+          });
+        });
         break;
       default:
-        deck = DeckOfCards(_jacksAndFives.deck);
+        deck = DeckOfCards(_jacksAndFives.jafGame.deck);
     }
     return Container(
         width: 100, height: 100, margin: EdgeInsets.only(left: 8), child: deck);

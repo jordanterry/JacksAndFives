@@ -1,14 +1,11 @@
 import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kago_game/playing_card_model.dart';
 import 'package:kago_game/playing_cards.dart';
 
 class PlayingCardAnimating extends StatefulWidget {
-  PlayingCardAnimating(this.card, this.fromTop, this.fromLeft, this.toTop,
-      this.toLeft, this.onAnimationEnd);
-
-  final PlayingCard card;
+  PlayingCardAnimating(this.fromTop, this.fromLeft, this.toTop, this.toLeft,
+      this.onAnimationEnd);
 
   final double fromTop;
 
@@ -30,7 +27,7 @@ typedef void OnAnimationEnd();
 
 class _PlayingCardAnimatingState extends State<PlayingCardAnimating>
     with SingleTickerProviderStateMixin {
-  int _animationMilliseconds = 250;
+  int _animationMilliseconds = 450;
   CancelableOperation _flipCancelable;
 
   AnimationController _animationController;

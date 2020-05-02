@@ -33,10 +33,17 @@ class DeckOfCards extends StatelessWidget {
   }
 }
 
+typedef void CardDraggedFromDeck();
+
+typedef void CardDraggedBackToDeck();
+
 class DraggableDeckOfCards extends StatelessWidget {
   final Deck deck;
+  final CardDraggedFromDeck cardDraggedFromDeck;
+  final CardDraggedBackToDeck cardDraggedBackToDeck;
 
-  DraggableDeckOfCards(this.deck);
+  DraggableDeckOfCards(
+      this.deck, this.cardDraggedFromDeck, this.cardDraggedBackToDeck);
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +87,13 @@ class DraggableDeckOfCards extends StatelessWidget {
       feedback: PlayingCardFront(deck.topCard()),
       childWhenDragging: Container(),
       data: deck.topCard(),
+      onDragStarted: () {
+        cardDraggedFromDeck();
+      },
+      onDragCompleted: () {},
+      onDraggableCanceled: (velocity, offset) {
+        cardDraggedBackToDeck();
+      },
     );
   }
 }

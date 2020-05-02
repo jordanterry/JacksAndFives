@@ -9,13 +9,6 @@ class PlayerDeck {
 }
 
 class PlayerDeckWidget extends StatefulWidget {
-  final PlayingCard cardOne;
-  final PlayingCard cardTwo;
-  final PlayingCard cardThree;
-  final PlayingCard cardFour;
-
-  PlayerDeckWidget(this.cardOne, this.cardTwo, this.cardThree, this.cardFour);
-
   @override
   State<StatefulWidget> createState() {
     return _PlayerDeckState();
@@ -25,36 +18,29 @@ class PlayerDeckWidget extends StatefulWidget {
 class _PlayerDeckState extends State<PlayerDeckWidget> {
   @override
   Widget build(BuildContext context) {
-    return StaticPlayerDeckWidget(
-        widget.cardOne, widget.cardTwo, widget.cardThree, widget.cardFour);
+    return StaticPlayerDeckWidget();
   }
 }
 
 class StaticPlayerDeckWidget extends StatelessWidget {
-  final PlayingCard _topLeftCard;
-  final PlayingCard _topRightCard;
-  final PlayingCard _bottomLeftCard;
-  final PlayingCard _bottomRightCard;
-
-  StaticPlayerDeckWidget(this._topLeftCard, this._topRightCard,
-      this._bottomLeftCard, this._bottomRightCard);
-
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
       Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-        _createCard(_topLeftCard),
-        _createCard(_bottomLeftCard),
+        _createCard(),
+        _createCard(),
       ]),
       Column(
           mainAxisSize: MainAxisSize.min,
-          children: [_createCard(_topRightCard), _createCard(_bottomRightCard)])
+          children: [_createCard(), _createCard()])
     ]);
   }
 
-  Widget _createCard(PlayingCard playingCard) {
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        child: NonFlippableFaceUpPlayingCard(playingCard));
+  Widget createPadding(Widget child) {
+    return Padding(padding: EdgeInsets.all(8.0), child: child);
+  }
+
+  Widget _createCard() {
+    return createPadding(NonFlippableFaceDownPlayingCard(key: GlobalKey()));
   }
 }
