@@ -21,8 +21,6 @@ class JackAndFivesScreen extends StatefulWidget {
 class _JackAndFivesState extends State<JackAndFivesScreen> {
   JacksAndFives _jacksAndFives;
 
-  Widget animatingCard = Container();
-
   GlobalKey dealtDeckKey = GlobalKey(debugLabel: "topOfDealtDeck");
 
   _JackAndFivesState() {
@@ -56,7 +54,6 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
     stackChildren.add(Align(
         alignment: FractionalOffset.bottomCenter,
         child: createPlayerDeckWidget()));
-    stackChildren.add(animatingCard);
 
     return Scaffold(
       body: Container(
@@ -74,14 +71,6 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
   void _handleCardPlacedOnPlayer(int position, Rect animateFrom) {
     setState(() {
       _jacksAndFives.playerPutsCardOnCardInDeck(position);
-
-//      Rect dealtDeck = dealtDeckKey.globalPaintBounds;
-//      animatingCard = PlayingCardAnimating(animateTo.top - 8,
-//          animateTo.left - 8, dealtDeck.top - 8, dealtDeck.left - 8, () {
-//        setState(() {
-//          animatingCard = Container();
-//        });
-//      });
     });
   }
 
@@ -115,15 +104,11 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
             _jacksAndFives.jafGame.dealtDeck.getTop(3),
             _handleDraggedOntoDealtDeck, () {
           setState(() {
-            setState(() {
-              _jacksAndFives.playerTakesCardFromDealtDeck();
-            });
+            _jacksAndFives.playerTakesCardFromDealtDeck();
           });
         }, () {
           setState(() {
-            setState(() {
-              _jacksAndFives.playerReturnsTakenCardToDeckTakenFrom();
-            });
+            _jacksAndFives.playerReturnsTakenCardToDeckTakenFrom();
           });
         });
         break;

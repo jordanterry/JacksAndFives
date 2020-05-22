@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:kago_game/playing_card_empty.dart';
 import 'package:kago_game/playing_card_model.dart';
 import 'package:kago_game/playing_cards.dart';
+import 'package:rect_getter/rect_getter.dart';
 
 typedef void CardDraggedOntoPlayerDeck(int position, Rect animateFrom);
 
@@ -35,7 +36,7 @@ class _DraggablePlayerDeckWidgetState extends State<DraggablePlayerDeckWidget> {
   }
 
   Widget _createCard(BuildContext context, int position) {
-    final containerKey = GlobalKey();
+    final containerKey = RectGetter.createGlobalKey();
     return DragTarget<PlayingCard>(
         builder: (context, candidates, rejectedData) {
       return candidates.length > 0
@@ -48,7 +49,7 @@ class _DraggablePlayerDeckWidgetState extends State<DraggablePlayerDeckWidget> {
     }, onWillAccept: (data) {
       return true;
     }, onAccept: (data) {
-      var bounds = containerKey.globalPaintBounds;
+      var bounds = RectGetter.getRectFromKey(containerKey);
       widget.cardDraggedOntoPlayerDeck(position, bounds);
     });
   }

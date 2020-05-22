@@ -27,7 +27,7 @@ typedef void OnAnimationEnd();
 
 class _PlayingCardAnimatingState extends State<PlayingCardAnimating>
     with SingleTickerProviderStateMixin {
-  int _animationMilliseconds = 450;
+  int _animationMilliseconds = 4550;
   CancelableOperation _flipCancelable;
 
   AnimationController _animationController;
@@ -41,8 +41,6 @@ class _PlayingCardAnimatingState extends State<PlayingCardAnimating>
   @override
   void initState() {
     super.initState();
-    left = widget.fromLeft;
-    top = widget.toLeft;
     _animationController = AnimationController(
         vsync: this, duration: Duration(milliseconds: _animationMilliseconds));
     _leftAnimation = Tween<double>(begin: widget.fromLeft, end: widget.toLeft)
