@@ -62,6 +62,28 @@ class JafGame {
   }
 }
 
+class DeckState {
+  Deck deck;
+  ComponentState componentState;
+
+  DeckState(this.deck, this.componentState);
+}
+
+class PlayerState {
+  Player player;
+  ComponentState componentState;
+
+  PlayerState(this.player, this.componentState);
+}
+
+enum ComponentState { NONE, CAN_TAKE, CAN_PLACE }
+
+class Turn {
+  Player whosTurn;
+
+  Turn(this.whosTurn);
+}
+
 class JafGameFactory {
   JafGame create() {
     var deckFactory = DeckOfCardsFactory();

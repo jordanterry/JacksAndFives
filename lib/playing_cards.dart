@@ -32,37 +32,25 @@ class PlayingCardFront extends StatelessWidget {
     var suit = getSuit(context);
     var textValue = playingCardToFaceValue(card);
     return Container(
-      height: 100,
-      width: 80,
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-      decoration: BoxDecoration(
-          color: Color.fromARGB(255, 255, 255, 255),
-          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-          border: Border(
-              top: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
-              left: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
-              right: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
-              bottom: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)))),
-      foregroundDecoration: BoxDecoration(),
-      child: Stack(children: [
-        Align(
-          alignment: FractionalOffset.topRight,
-          child: Column(children: <Widget>[
-            Text(textValue,
-                style: TextStyle(
-                    fontSize: 11, color: Color.fromARGB(255, 0, 0, 0))),
-            suit
-          ]),
-        ),
-        Align(
-            alignment: FractionalOffset.center,
-            child: Text(
-              textValue,
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            )),
-      ]),
-    );
+        height: 60,
+        width: 40,
+        decoration: BoxDecoration(
+            color: Color.fromARGB(255, 255, 255, 255),
+            borderRadius: const BorderRadius.all(Radius.circular(2.0)),
+            border: Border(
+                top: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
+                left: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
+                right: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
+                bottom: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)))),
+        foregroundDecoration: BoxDecoration(),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(textValue,
+                  style: TextStyle(
+                      fontSize: 11, color: Color.fromARGB(255, 0, 0, 0))),
+              suit
+            ]));
   }
 
   String playingCardToFaceValue(PlayingCard playingCard) {
@@ -154,13 +142,13 @@ class PlayingCardBack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BorderSide cardBorder =
-        BorderSide(width: 5, color: const Color.fromARGB(255, 0, 0, 0));
+        BorderSide(width: 2, color: const Color.fromARGB(255, 0, 0, 0));
     return Container(
-      height: 100,
-      width: 80,
+      height: 60,
+      width: 40,
       decoration: BoxDecoration(
           color: Color.fromARGB(255, 255, 0, 0),
-          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(2.0)),
           border: Border(
               top: cardBorder,
               left: cardBorder,

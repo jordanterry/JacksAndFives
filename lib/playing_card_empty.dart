@@ -10,8 +10,8 @@ class PlayingCardEmptyWidget extends StatelessWidget {
         padding: EdgeInsets.all(0),
         child: Container(
           decoration: BoxDecoration(color: Color.fromARGB(255, 255, 255, 255)),
-          height: 100,
-          width: 80,
+          height: 60,
+          width: 40,
         ));
   }
 }

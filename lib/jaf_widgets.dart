@@ -58,6 +58,9 @@ class _JackAndFivesState extends State<JackAndFivesScreen> {
     return Scaffold(
       body: Container(
           margin: MediaQuery.of(context).padding,
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 240, 240, 240),
+          ),
           child: Stack(
               children:
                   stackChildren)), // This trailing comma makes auto-formatting nicer for build methods.

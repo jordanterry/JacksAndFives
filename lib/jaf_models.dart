@@ -65,9 +65,7 @@ class JacksAndFives {
 }
 
 enum DealtDeckState { NOTHING, DROPPABLE, DRAGGABLE, DROPPABLE_AND_DRAGGABLE }
-
 enum DeckState { NOTHING, DRAGGABLE }
-
 enum PlayerDeckState { NOTHING, DROPPABLE }
 
 class Player {
@@ -79,4 +77,10 @@ class Player {
     int index = cards.indexOf(oldCard);
     cards[index] = newCard;
   }
+}
+
+class PeekedCard {
+  final PlayingCard playingCard;
+
+  PeekedCard(this.playingCard);
 }
